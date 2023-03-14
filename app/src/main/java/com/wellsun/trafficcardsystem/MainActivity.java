@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.decard.NDKMethod.BasicOper;
 import com.wellsun.trafficcardsystem.bean.SignBean;
 import com.wellsun.trafficcardsystem.pboc.PBOCUtil;
-import com.wellsun.trafficcardsystem.pboc.PBOCUtil1;
 import com.wellsun.trafficcardsystem.util.BytesUtil;
 import com.wellsun.trafficcardsystem.util.CRC16;
 
@@ -62,7 +61,7 @@ public class MainActivity extends BaseActivity {
         tvReadcardState.setText("读卡器状态: " + bReadCardState);
 
         try {
-            String des = PBOCUtil1.getDisperseKeyOnce("1234567890123456", "3F013F013F013F013F013F013F013F01");
+            String des = PBOCUtil.getDisperseKeyOnce("1234567890123456", "3F013F013F013F013F013F013F013F01");
             System.out.println("分散密匙是"+des);
         } catch (Exception e) {
             e.printStackTrace();

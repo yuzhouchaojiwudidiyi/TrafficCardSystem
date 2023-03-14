@@ -40,6 +40,30 @@ public class PBOCUtil {
         return des;
     }
 
+    //计算过程密匙计算右边密匙
+    public static String getDisperseKeyOnce (String data, String key)
+            throws Exception {
+        byte[] processKeyBytes = hexString2byte(key);
+        byte[] randomDataBytes = hexString2byte(data);
+        //分散左边8字节
+        byte[] calcPbocdesBytesLeft = calculatePbocdes(randomDataBytes, processKeyBytes);
+        String calcPbocdesLeft = byte2hexString(calcPbocdesBytesLeft);
+        String desLeft = calcPbocdesLeft.substring(0, 16);
+
+        //数据取反
+        byte[] byteRandomRight = new byte[8];
+        for (int i = 0; i < byteRandomRight.length; i++) {
+            byteRandomRight[i] = (byte) ~randomDataBytes[i];
+        }
+
+        //分散右边八字节
+        byte[] calcPbocdesBytesRight = calculatePbocdes(byteRandomRight, processKeyBytes);
+        String calcPbocdesRight = byte2hexString(calcPbocdesBytesRight);
+        String desRight = calcPbocdesRight.substring(0, 16);
+
+        return desLeft+desRight;
+    }
+
     private static byte[] calculatePbocdes(byte[] randomDataBytes, byte[] keyBytes) throws Exception {
         SecureRandom sr = new SecureRandom();
         DESKeySpec dks = new DESKeySpec(keyBytes);
