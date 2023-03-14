@@ -1,0 +1,81 @@
+1.  串口通信 导入串口包, servicettysqr 类为使用方法
+2.  tts语音合成
+     导入ttsmodle包  加入armeabi.so文件 libem_aitalk libem_ivp2 libem_ivw# libspeekchmsc libttsaisound libvadlib
+     gradle中加入         ndk { abiFilters  'armeabi'    }      sourceSets {  main {        jniLibs.srcDirs = ['libs']    } }
+  //                YTts.play("0123456789");
+  //                YTts.getInstance().setPitch(0.5f);
+                  TTS tts=TTS.getInstance();//获取单例对象
+  //                tts.init(MainActivity.this);//初始化
+                  tts.init(MainActivity.this, TTSConstants.TTS_XIAOMEI);//初始化
+                  tts.setRate(100);
+                  tts.speakText("各个国家都各个国家嘅国歌");//语音合成
+  //                tts.isSpeaking();//是否正在播放中
+                  //在程序结束时调用
+  //                tts.release();//释放资源
+
+  3.加入jar包 ftp4j-172
+          FTPClient client = new FTPClient();
+            client.connect(App.FtpIP, Integer.parseInt(App.FtpIPPort));//host:服务器IP地址 port:端口
+            client.login("GATE", "GATE@2019");  //账号秘密
+            //选择下载黑名单
+            client.changeDirectory("/DOWNLOAD/GATE/BLACKLIST/");
+            client.download("/DOWNLOAD/GATE/BLACKLIST/" + ftp_name, new File(localPathDir + ftp_name), new MyTransferListener()); //下载新的
+
+
+    public class MyTransferListener implements FTPDataTransferListener {
+
+        public void started() {
+            // Transfer started
+            Log.v("ftp", "下载开始");
+        }
+
+        public void transferred(int length) {
+            // Yet other length bytes has been transferred since the last time this
+            // method was called
+            Log.v("ftp", "下载进度" + length);
+
+        }
+
+        public void completed() {
+            // Transfer completed
+            Log.v("ftp", "下载完成");
+
+
+        }
+
+        public void aborted() {
+            // Transfer aborted
+            Log.v("ftp", "下载中断");
+
+        }
+
+        public void failed() {
+            // Transfer failed
+            Log.v("ftp", "下载失败");
+
+        }
+
+    }
+
+
+4.   d8 读卡器
+    1. jar包加入  dc_mate_202208041107.jar
+    2. jniLibs包中加入 libdc_mobile_mate.so   libdcrf32.so  libwlt2bmp.so
+    3. 加入权限
+    <uses-permission android:name="android.permission.INTERNET"
+    />
+    <uses-permission
+    android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission
+    android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission
+    android:name="android.permission.READ_PHONE_STATE" />
+    4.开始使用
+    //向系统申请使用USB权限,此过程为异步,建议放在程序启动时调用。
+    BasicOper.dc_AUSB_ReqPermission(this);
+    //打开端口，usb模式，打开之前必须确保已经获取到USB权限，返回值为设备句柄号。
+    int devHandle = BasicOper.dc_open("AUSB",this,"",0);
+    if(devHandle>0){  
+      Log.d("open","dc_open success devHandle = "+devHandle);
+    }
+
