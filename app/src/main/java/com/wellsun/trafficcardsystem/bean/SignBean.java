@@ -8,7 +8,7 @@ package com.wellsun.trafficcardsystem.bean;
 public class SignBean {
     //头  29字节
     String xieYiType1 = "01"; //协议类型  1
-    String xieYiCode2 = "0002";//协议代码 2
+    String xieYiCode2 = "0000";//协议代码 2
     String posId3 = "11223344";//pos编号 4
     String liuLiangKaHao4 = "0000000000000000000000000000000000000000";//流量卡号 20
     String length5 = "0091";  //长度 2
