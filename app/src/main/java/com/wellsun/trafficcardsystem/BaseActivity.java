@@ -1,6 +1,7 @@
 package com.wellsun.trafficcardsystem;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,6 +17,7 @@ import org.greenrobot.eventbus.Subscribe;
  */
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
     public Context mContext;
+
 
 
     @Subscribe

@@ -54,4 +54,5 @@ dependencies {
     implementation 'com.github.getActivity:XXPermissions:16.8'
     //d8读卡器
     implementation files('libs/dc_mate_202008071648.jar')
+
 }

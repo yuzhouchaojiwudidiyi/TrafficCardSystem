@@ -15,7 +15,7 @@ import me.jessyan.autosize.unit.Subunits;
  */
 public class App extends Application {
     public static TTS tts;
-    private static App appContext;
+    public static App appContext;
 
 
     @Override

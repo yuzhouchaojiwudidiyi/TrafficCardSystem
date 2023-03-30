@@ -1,6 +1,6 @@
 1.  串口通信 导入串口包, servicettysqr 类为使用方法
 2.  tts语音合成
-     导入ttsmodle包  加入armeabi.so文件 libem_aitalk libem_ivp2 libem_ivw# libspeekchmsc libttsaisound libvadlib
+     导入ttsmodle包  加入armeabi.so文件 libem_aitalk5  libem_ivp2  libem_ivw3  libspeekchmsc libttsaisound libvadlib
      gradle中加入         ndk { abiFilters  'armeabi'    }      sourceSets {  main {        jniLibs.srcDirs = ['libs']    } }
   //                YTts.play("0123456789");
   //                YTts.getInstance().setPitch(0.5f);

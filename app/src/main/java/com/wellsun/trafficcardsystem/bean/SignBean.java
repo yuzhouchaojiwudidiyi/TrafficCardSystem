@@ -11,7 +11,7 @@ public class SignBean {
     String xieYiCode2 = "0000";//协议代码 2
     String posId3 = "11223344";//pos编号 4
     String liuLiangKaHao4 = "0000000000000000000000000000000000000000";//流量卡号 20
-    String length5 = "0091";  //长度 2
+    String length5 = "0097";  //长度 2
     //数据内容  145字节
     String PosDateTime6 = "20230308112233";   //时间 7
     String CorpId7 = "000000000000";   //商户号 6
@@ -30,18 +30,18 @@ public class SignBean {
     String ParameterVersion20 = "00000001"; //参数版本 4
     String PriceVersion21 = "00000001"; //票价版本 4
     String MOTWhiteListVersion22 = "00000000"; //默认 4
-    String BinVersion23 = "00000000"; //默认 4
+    String BinVersion23 = "00000000000000"; //默认 7
     String AidVersion24 = "00000000"; //默认 4
     String CaVersion25 = "00000000"; //默认 4
     String TrackBlackListVersion26 = "00000000"; //默认 4
-    String MainBoardVersion27 = "00000000"; //MainBoardVersion 7
+    String MainBoardVersion27 = "00000000000000"; //MainBoardVersion 7
     String ChargeByTheMileVersion28 = "00000000"; //分段计价 4
     String Places29 = "00";//位置 1
     String LockState30 = "00";//预留 1
     String PurseNumber31 = "0000000000";// 预留 5
     String FareId32 = "00000000000000000000000000000000";// 票价id 16
     String MoHURDWhiteListVersion33 = "00000000"; //默认 4
-    String SDKVersion34 = "00000000000000"; //默认 4
+    String SDKVersion34 = "00000000000000"; //默认 7
 
 
     public  String getString() {
