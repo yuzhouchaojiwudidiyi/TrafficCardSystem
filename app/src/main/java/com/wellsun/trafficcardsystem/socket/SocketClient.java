@@ -3,6 +3,8 @@ package com.wellsun.trafficcardsystem.socket;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.wellsun.trafficcardsystem.util.BytesUtil;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -120,10 +122,11 @@ public class SocketClient {
         sendPool.execute(new Runnable() {
             @Override
             public void run() {
-                String yyyyMMddHHmmss = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-                byte[] keyByte = yyyyMMddHHmmss.getBytes();
+//                String yyyyMMddHHmmss = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+//                byte[] cardBytes = yyyyMMddHHmmss.getBytes();
+                byte[] cardBytes = BytesUtil.hexString2Bytes(message);
                 try {
-                    os.write(keyByte);
+                    os.write(cardBytes);
                     if (socketListener != null) {
                         socketListener.onSent(message);
                     }

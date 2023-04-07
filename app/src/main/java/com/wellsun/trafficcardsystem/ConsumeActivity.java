@@ -49,9 +49,8 @@ public class ConsumeActivity extends BaseActivity {
     public static String readWallet = "805C000204";           // 选择电子钱包
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-
     public void ConsumeServie(ConsumeTipBean consumeTipBean){
-        ToastPrint.showText(consumeTipBean.getMoney());
+        ToastPrint.showView(consumeTipBean.getMoney());
     }
 
     @Override

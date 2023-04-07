@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import com.decard.NDKMethod.BasicOper;
 import com.wellsun.trafficcardsystem.bean.ConsumeTipBean;
 import com.wellsun.trafficcardsystem.socket.SocketClient;
+import com.wellsun.trafficcardsystem.util.BytesUtil;
+import com.wellsun.trafficcardsystem.util.CRC16;
 import com.wellsun.trafficcardsystem.util.L;
 import com.wellsun.trafficcardsystem.util.ToastPrint;
 
@@ -19,6 +21,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * date     : 2023-04-06
@@ -26,13 +30,15 @@ import java.util.Date;
  * describe :
  */
 public class ConsumeService extends Service implements SocketClient.SocketListener {
+    ExecutorService pool = Executors.newFixedThreadPool(1);               //创建含有3个线程的线程池
+
     String ServerIP = "192.168.1.195";
     String ServerIPPort = "20000";
     private String csn;
 
     public static String chooseWallet = "00A40000020002";     // 选择电子钱包
     public static String readWallet = "805C000204";           // 选择电子钱包
-    private ConsumeActivity mContext;
+    private SocketClient socketClient;
 
     @Nullable
     @Override
@@ -44,13 +50,13 @@ public class ConsumeService extends Service implements SocketClient.SocketListen
     @Override
     public void onCreate() {
         super.onCreate();
-        SocketClient socketClient = new SocketClient(ServerIP, ServerIPPort);
+        socketClient = new SocketClient(ServerIP, ServerIPPort);
         socketClient.connect();
         socketClient.setOnConnectListener(this);
         ReadCardThread readCardThread = new ReadCardThread();
         readCardThread.start();
-    }
 
+    }
 
 
     class ReadCardThread extends Thread {
@@ -76,7 +82,7 @@ public class ConsumeService extends Service implements SocketClient.SocketListen
         String r_search_card = BasicOper.dc_card_n_hex(0x01);
         L.v("寻卡=" + r_search_card);
         if (!r_search_card.startsWith("0000")) {
-            ToastPrint.showText("请重新放置卡片");
+//            ToastPrint.showText("请重新放置卡片");
             return;
         }
         csn = r_search_card.split("\\|", -1)[1].substring(0, 8);
@@ -101,7 +107,7 @@ public class ConsumeService extends Service implements SocketClient.SocketListen
                     return;
                 }
                 //消费
-                consumeAmount();
+                consumeAmount(r_cmd_choose_3f01.split("\\|", -1)[1].substring(68, 84));
             }
 
         } else {
@@ -115,7 +121,7 @@ public class ConsumeService extends Service implements SocketClient.SocketListen
     String posid = "112233445566";
     String cmdps_choose2f01 = "00A40000022f01";
 
-    private void consumeAmount() {
+    private void consumeAmount(String cardNumber) {
         String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()).toString();
         //消费金额
         String amountHex = String.format("%08X", Integer.parseInt("2"));
@@ -169,14 +175,21 @@ public class ConsumeService extends Service implements SocketClient.SocketListen
         Log.v("卡操作", "消费成功");
         Log.v("卡操作", "消费成功");
         App.tts.speakText("消费成功2元");
-        mContext.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ToastPrint.showText("消费2元");
-            }
-        });
 
         EventBus.getDefault().post(new ConsumeTipBean("消费2元"));
+
+        String cosnsume = "010004886020913030303030303030303030303030303030303030010C214090000605000007700005F088602091C7A3A54B214000000150442809012140900006050000012023030708312600000770000027051E0000001E0000005A18000004E921400075C0A8C2B10100580100000000000000000000000000000000000000000000000000023030303030303030303000000000214001000000000000000000010000000500000000000000000000000000000002000000000000000000000000000001000000000000000000000000000004BFFFFFFD0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        StringBuilder sb = new StringBuilder(cosnsume);
+        sb.replace(100, 116, cardNumber); //卡号
+        sb.replace(138, 152, date); //日期
+        sb.replace(168, 176, amountHex); //消费金额
+        sb.replace(184, 192, balanceHex); //卡交易前余额
+        sb.replace(192, 196, cardCnt); //卡片交易计数器
+        sb.replace(200, 208, csn.substring(8, 16)); //物理卡号
+        cosnsume = sb.toString();
+        String crc16 = CRC16.crc16(cosnsume);
+        socketClient.send(cosnsume + crc16);
+
 
     }
 
