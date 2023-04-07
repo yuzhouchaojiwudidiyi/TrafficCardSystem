@@ -1,5 +1,6 @@
 package com.wellsun.trafficcardsystem;
 
+import android.content.Intent;
 import android.os.SystemClock;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -73,6 +74,8 @@ public class MainActivity extends BaseActivity {
         tvResult.setMovementMethod(ScrollingMovementMethod.getInstance());
         tvReadcardState.setText("读卡器状态: " + bReadCardState);
 
+        Intent intent = new Intent(mContext,ConsumeActivity.class);
+        startActivity(intent);
 
     }
 
@@ -83,7 +86,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        startTcpThread();
+//        startTcpThread();
 
     }
 

@@ -29,5 +29,19 @@ public class ToastPrint {
         toastText.show();
     }
 
-
+    public static void showView(String mgs) {
+        if (toastView == null) {
+            toastView = Toast.makeText(App.appContext, "", Toast.LENGTH_LONG);
+        } else {
+            toastView.cancel();
+            toastView = Toast.makeText(App.appContext, "", Toast.LENGTH_LONG);
+        }
+        View view = LayoutInflater.from(App.appContext).inflate(R.layout.toast_view, null);
+        if (mgs != null) {
+            ((TextView) view.findViewById(R.id.tv_toast)).setText(mgs);
+        }
+        toastView.setView(view);
+        toastView.setGravity(Gravity.CENTER, 0, 0);
+        toastView.show();
+    }
 }

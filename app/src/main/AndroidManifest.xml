@@ -11,29 +11,29 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name="App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".ConsumeActivity"></activity>
         <!-- 屏幕适配 -->
         <meta-data
             android:name="design_width_in_dp"
             android:value="1024" />
         <meta-data
             android:name="design_height_in_dp"
-            android:value="600" />
-
-        <!-- 告知 XXPermissions 当前项目已经适配了分区存储特性 -->
+            android:value="600" /> <!-- 告知 XXPermissions 当前项目已经适配了分区存储特性 -->
         <meta-data
             android:name="ScopedStorage"
             android:value="true" />
 
-        <activity android:name=".MainActivity"
-            android:launchMode="singleTask" android:screenOrientation="landscape"
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,6 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name="ConsumeService"/>
     </application>
 
 </manifest>
